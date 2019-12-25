@@ -2,6 +2,8 @@ package errors
 
 import "fmt"
 
+import "strings"
+
 // Error contains errors message and code
 type Error struct {
 	prefix string
@@ -14,6 +16,11 @@ func New(msg string) *Error {
 	return &Error{Msg: msg}
 }
 
+// FromError returns Error from error
+func FromError(err error) *Error {
+	return &Error{Msg: err.Error()}
+}
+
 // WithCode returns Error with errors code
 func (e *Error) WithCode(code int) *Error {
 	e.Code = code
@@ -23,6 +30,12 @@ func (e *Error) WithCode(code int) *Error {
 // WithPrefix returns Error with prefix string
 func (e *Error) WithPrefix(prefix string) *Error {
 	e.prefix = prefix
+	return e
+}
+
+// TrimLeft returns Error with left-trimmed message
+func (e *Error) TrimLeft(cutset string) *Error {
+	e.Msg = strings.TrimLeft(e.Msg, cutset)
 	return e
 }
 
